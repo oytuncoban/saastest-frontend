@@ -3,9 +3,9 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   // NOTE: It's fixing flickering issue
-  important: '#__next',
+  important: "#__next",
   theme: {
     extend: {},
   },
