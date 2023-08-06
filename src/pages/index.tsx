@@ -1,5 +1,4 @@
 "use client"
-import { AppConfig } from "@/utils/AppConfig"
 import { Button, Grid, Stack } from "@mui/material"
 import Head from "next/head"
 import Header from "./components/Header/Header"
