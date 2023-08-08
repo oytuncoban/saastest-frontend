@@ -3,6 +3,7 @@ import Home from '@/pages/Home';
 import NotFound from '@/pages/NotFound';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
+import Dashboard from '@/pages/Dashboard/Dashboard';
 
 function AppRoutes() {
   return (
@@ -11,6 +12,8 @@ function AppRoutes() {
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/404" element={<NotFound />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );

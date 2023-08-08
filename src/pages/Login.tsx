@@ -10,18 +10,25 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
+import { LoginData, LoginResponse, login } from '@/services/auth';
 
-export default function SignIn() {
+export default function Login() {
   const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const loginData = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
 
-    navigate('/dashboard');
+    if (loginData.email && loginData.password) {
+      login(loginData as LoginData).then((r: LoginResponse) => {
+        localStorage.setItem('user', JSON.stringify(r.data));
+        navigate('/dashboard');
+      });
+    }
   };
 
   return (

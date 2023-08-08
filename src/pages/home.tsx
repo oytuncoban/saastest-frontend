@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom';
-import Header from '@/components/header';
+import Header from '@/components/Header';
 
 export default function Home() {
   return (
-    <div className="bg-gray-900 h-screen">
+    <div className="bg-transparent h-screen">
       <Header />
       <div className="relative isolate overflow-hidden pt-14">
         <img
@@ -39,19 +39,16 @@ export default function Home() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <NavLink
-                to="/login"
+                to="/dashboard"
                 className="rounded-lg bg-indigo-500 
                   px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
                   hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
                 Get started
               </NavLink>
-              <a
-                href="#"
-                className="text-sm font-semibold leading-6 text-white"
-              >
-                Learn more <span aria-hidden="true">→</span>
-              </a>
+              {/* <a href="#" className="text-sm font-semibold leading-6 text-white">
+              Learn more <span aria-hidden="true">→</span>
+            </a> */}
             </div>
           </div>
         </div>

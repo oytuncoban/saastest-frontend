@@ -1,0 +1,11 @@
+.git
+node_modules
+.eslintignore
+.gitignore
+LICENSE
+dist
+dist-ssr
+.gitlab-ci.yml
+.prettierrc
+package-lock.json
+package.json

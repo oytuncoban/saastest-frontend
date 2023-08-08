@@ -33,6 +33,8 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 0,
     'react/jsx-curly-brace-presence': 0,
     'import/no-named-as-default': 'warn',
+    '@typescript-eslint/no-explicit-any': 0,
+    'react/jsx-props-no-spreading': 0,
   },
   ignorePatterns: [
     '.eslintrc.cjs',
