@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
@@ -11,10 +12,18 @@ import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import React, { useEffect, useState } from 'react';
-import { NavItems, NavUserItems } from './listItems';
+import {
+  Dashboard as DashboardIcon,
+  Logout,
+  People,
+  TuneRounded,
+  Workspaces,
+} from '@mui/icons-material';
+import DashboardView from '../../views/DashboardView';
+
 import useUser from '@/hooks/useUser';
 import NotFound from '../NotFound';
+import Tests from '@/views/Tests';
 
 const drawerWidth = 240;
 
@@ -74,6 +83,55 @@ export default function Dashboard() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const NavItems: {
+    id: string;
+    icon: JSX.Element;
+    text: string;
+    view: JSX.Element;
+    onClick?: () => void;
+  }[] = [
+    {
+      id: 'dashboard',
+      icon: <DashboardIcon />,
+      text: 'Dashboard',
+      view: <DashboardView />,
+    },
+    {
+      id: 'tests',
+      icon: <Workspaces />,
+      text: 'Tests',
+      view: <Tests />,
+    },
+    {
+      id: 'profile',
+      icon: <People />,
+      text: 'Profile',
+      view: <div>Profile</div>,
+    },
+    {
+      id: 'settings',
+      icon: <TuneRounded />,
+      text: 'Settings',
+      view: <div>Settings</div>,
+    },
+  ];
+
+  const NavUserItems: {
+    id: string;
+    icon: JSX.Element;
+    text: string;
+    view?: JSX.Element;
+    onClick?: () => void;
+  }[] = [
+    {
+      id: 'logout',
+      icon: <Logout />,
+      text: 'Logout',
+      onClick: () => {
+        window.location.href = '/';
+      },
+    },
+  ];
 
   const [activeViewId, setActiveViewID] = useState('dashboard');
   const activeViewItem = NavItems.find((item) => item.id === activeViewId);
@@ -90,120 +148,112 @@ export default function Dashboard() {
     }
   }, [user]);
 
-  return (
-    // <ThemeProvider theme={defaultTheme}>
-    !user ? (
-      <NotFound />
-    ) : (
-      <Box sx={{ display: 'flex' }}>
-        {/* <CssBaseline /> */}
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: '24px', // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              {activeViewItem?.text}
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List
-            component="nav"
-            className="flex flex-col justify-between h-full"
-          >
-            <>
-              <div>
-                {NavItems.map((item) => (
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-
-                  <ListItemButton
-                    key={item.id}
-                    id={item.id}
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick={viewChangeHandler}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.text} />
-                  </ListItemButton>
-                ))}
-                <Divider />
-              </div>
-              <div className="pb-4">
-                {NavUserItems.map((item) => (
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-
-                  <ListItemButton
-                    key={item.id}
-                    id={item.id}
-                    onClick={() => {
-                      if (item.onClick) {
-                        if (item.id === 'logout') {
-                          user.logout();
-                        }
-                        item.onClick();
-                      }
-                    }}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.text} />
-                  </ListItemButton>
-                ))}
-              </div>
-            </>
-          </List>
-        </Drawer>
-        <Box
-          component="main"
+  return !user ? (
+    <NotFound />
+  ) : (
+    <Box sx={{ display: 'flex' }}>
+      <AppBar position="absolute" open={open}>
+        <Toolbar
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
+            pr: '24px', // keep right padding when drawer closed
           }}
         >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {activeViewItem?.view}
-          </Container>
-        </Box>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer}
+            sx={{
+              marginRight: '36px',
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            sx={{ flexGrow: 1 }}
+          >
+            {activeViewItem?.text}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent" open={open}>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            px: [1],
+          }}
+        >
+          <IconButton onClick={toggleDrawer}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List component="nav" className="flex flex-col justify-between h-full">
+          <>
+            <div>
+              {NavItems.map((item) => (
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+
+                <ListItemButton
+                  key={item.id}
+                  id={item.id}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onClick={viewChangeHandler}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              ))}
+              <Divider />
+            </div>
+            <div className="pb-4">
+              {NavUserItems.map((item) => (
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+
+                <ListItemButton
+                  key={item.id}
+                  id={item.id}
+                  onClick={() => {
+                    if (item.onClick) {
+                      if (item.id === 'logout') {
+                        user.logout();
+                      }
+                      item.onClick();
+                    }
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              ))}
+            </div>
+          </>
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: '100vh',
+          overflow: 'auto',
+        }}
+      >
+        <Toolbar />
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          {activeViewItem?.view}
+        </Container>
       </Box>
-    )
-    // </ThemeProvider>
+    </Box>
   );
 }

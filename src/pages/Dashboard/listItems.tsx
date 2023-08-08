@@ -5,7 +5,7 @@ import {
   Dashboard,
   Logout,
 } from '@mui/icons-material';
-import DashboardView from './DashboardView';
+import DashboardView from '../../views/DashboardView';
 
 export const NavItems: {
   id: string;
