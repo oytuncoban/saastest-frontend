@@ -12,18 +12,12 @@ import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import {
-  Dashboard as DashboardIcon,
-  Logout,
-  People,
-  TuneRounded,
-  Workspaces,
-} from '@mui/icons-material';
-import DashboardView from '../../views/DashboardView';
+import { Key, Logout, People, Workspaces } from '@mui/icons-material';
 
 import useUser from '@/hooks/useUser';
 import NotFound from '../NotFound';
 import Tests from '@/views/Tests';
+import APIKeys from '@/views/APIKeys';
 
 const drawerWidth = 240;
 
@@ -91,12 +85,6 @@ export default function Dashboard() {
     onClick?: () => void;
   }[] = [
     {
-      id: 'dashboard',
-      icon: <DashboardIcon />,
-      text: 'Dashboard',
-      view: <DashboardView />,
-    },
-    {
       id: 'tests',
       icon: <Workspaces />,
       text: 'Tests',
@@ -109,10 +97,10 @@ export default function Dashboard() {
       view: <div>Profile</div>,
     },
     {
-      id: 'settings',
-      icon: <TuneRounded />,
-      text: 'Settings',
-      view: <div>Settings</div>,
+      id: 'api_keys',
+      icon: <Key />,
+      text: 'API Keys',
+      view: <APIKeys />,
     },
   ];
 
@@ -133,11 +121,14 @@ export default function Dashboard() {
     },
   ];
 
-  const [activeViewId, setActiveViewID] = useState('dashboard');
+  const [activeViewId, setActiveViewID] = useState(
+    localStorage.getItem('activeViewID') ?? 'tests'
+  );
   const activeViewItem = NavItems.find((item) => item.id === activeViewId);
 
   function viewChangeHandler(event: React.MouseEvent<HTMLDivElement>) {
     const { id } = event.currentTarget;
+    localStorage.setItem('activeViewID', id);
     setActiveViewID(id);
   }
 
