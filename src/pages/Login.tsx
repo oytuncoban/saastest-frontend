@@ -26,6 +26,7 @@ export default function Login() {
     if (loginData.email && loginData.password) {
       login(loginData as LoginData).then((r: LoginResponse) => {
         localStorage.setItem('user', JSON.stringify(r.data));
+        localStorage.removeItem('activeViewID');
         navigate('/dashboard');
       });
     }
