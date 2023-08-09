@@ -7,6 +7,7 @@ export interface Test {
   id: string;
   name: string;
   type: 'discrete' | 'continous';
+  alpha?: number;
 }
 
 export interface VariantData {
