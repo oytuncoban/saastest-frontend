@@ -142,7 +142,6 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    console.log(user);
     if (!user) {
       window.location.href = '/login';
     }

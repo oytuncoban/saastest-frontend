@@ -1,4 +1,4 @@
-import { ArrowBackIos, Refresh } from '@mui/icons-material';
+import { Refresh } from '@mui/icons-material';
 import { Button, IconButton } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { INITIAL_ROWS, Test, getTests } from '@/services/test';
+import DetailedTest from '@/views/DetailedTest';
 
 export default function Tests() {
   const [rows, setRows] = useImmer<Test[]>(INITIAL_ROWS);
@@ -69,17 +70,9 @@ export default function Tests() {
       </Table>
     </TableContainer>
   ) : (
-    <>
-      {' '}
-      <Button
-        variant="outlined"
-        onClick={() => {
-          setSelectedTestId(null);
-        }}
-      >
-        <ArrowBackIos />
-        Go Back
-      </Button>
-    </>
+    <DetailedTest
+      selectedTestId={selectedTestId}
+      setSelectedTestId={setSelectedTestId}
+    />
   );
 }

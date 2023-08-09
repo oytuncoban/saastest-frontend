@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 // axios class init with env variable base url = http://localhost:8000
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: import.meta.env.VITE_API_URL as string,
 });
 
 // axios get, post, put, delete methods
