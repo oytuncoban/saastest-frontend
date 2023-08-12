@@ -18,7 +18,7 @@ export type UserAxiosResponse = {
   is_superuser: boolean;
 };
 
-export type LoginResponse = {
+export type User = {
   id: number;
   email: string;
   username: string;
@@ -28,6 +28,8 @@ export type LoginResponse = {
   isStaff: boolean;
   isSuperuser: boolean;
 };
+
+export type LoginResponse = User;
 
 export type LoginRequest = {
   email: string;
@@ -50,7 +52,7 @@ export type RegisterRequest = {
   surname: string;
 };
 
-export type RegisterResponse = LoginResponse;
+export type RegisterResponse = User;
 
 export function login(credentials: LoginData) {
   const loginRequest: LoginRequest = {
