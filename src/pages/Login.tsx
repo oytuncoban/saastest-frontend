@@ -9,11 +9,23 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { LoginData, LoginResponse, login } from '@/services/auth';
+import useUser from '@/hooks/useUser';
+import {
+  LoginData,
+  LoginResponse,
+  UserAxiosResponse,
+  login,
+} from '@/services/auth';
 
 export default function Login() {
   const navigate = useNavigate();
+  const user = useUser();
+
+  if (user) {
+    navigate('/dashboard');
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,8 +36,19 @@ export default function Login() {
     };
 
     if (loginData.email && loginData.password) {
-      login(loginData as LoginData).then((r: LoginResponse) => {
-        localStorage.setItem('user', JSON.stringify(r.data));
+      login(loginData as LoginData).then((r: AxiosResponse) => {
+        const response: UserAxiosResponse = r.data as UserAxiosResponse;
+        const loginResponse: LoginResponse = {
+          id: response.id,
+          email: response.email,
+          username: response.username,
+          firstName: response.first_name,
+          lastName: response.last_name,
+          isActive: response.is_active,
+          isStaff: response.is_staff,
+          isSuperuser: response.is_superuser,
+        };
+        localStorage.setItem('user', JSON.stringify(loginResponse));
         localStorage.removeItem('activeViewID');
         navigate('/dashboard');
       });

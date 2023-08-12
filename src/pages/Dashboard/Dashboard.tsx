@@ -18,6 +18,7 @@ import useUser from '@/hooks/useUser';
 import NotFound from '../NotFound';
 import Tests from '@/views/Tests';
 import APIKeys from '@/views/APIKeys';
+import Profile from '@/views/Profile';
 
 const drawerWidth = 240;
 
@@ -94,7 +95,7 @@ export default function Dashboard() {
       id: 'profile',
       icon: <People />,
       text: 'Profile',
-      view: <div>Profile</div>,
+      view: <Profile />,
     },
     {
       id: 'api_keys',

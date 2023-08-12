@@ -13,4 +13,9 @@ export default defineConfig({
       '@/public': path.resolve(__dirname, './public'),
     },
   },
+  server: {
+    proxy: {
+      '/api/v1': 'http://localhost:8000',
+    },
+  },
 });

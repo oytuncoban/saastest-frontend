@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 // axios class init with env variable base url = http://localhost:8000
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL as string,
+  withCredentials: true,
 });
 
 // axios get, post, put, delete methods
@@ -16,10 +17,8 @@ const del = (url: string, config?: AxiosRequestConfig) =>
   axiosInstance.delete(url, config);
 
 export default {
-  network: {
-    get,
-    post,
-    put,
-    del,
-  },
+  get,
+  post,
+  put,
+  del,
 };

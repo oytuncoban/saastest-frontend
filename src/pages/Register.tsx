@@ -1,20 +1,53 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { AxiosResponse } from 'axios';
+import { useNavigate } from 'react-router-dom';
+import useUser from '@/hooks/useUser';
+import {
+  RegisterFormData,
+  RegisterResponse,
+  UserAxiosResponse,
+  register,
+} from '@/services/auth';
 
 export default function Register() {
+  const navigate = useNavigate();
+  const user = useUser();
+  if (user) {
+    navigate('/dashboard');
+  }
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const registerData: RegisterFormData = {
       email: data.get('email'),
       password: data.get('password'),
+      username: data.get('username'),
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
+    };
+    register(registerData as RegisterFormData).then((r: AxiosResponse) => {
+      const response: UserAxiosResponse = r.data;
+      const registerResponse: RegisterResponse = {
+        id: response.id,
+        email: response.email,
+        username: response.username,
+        firstName: response.first_name,
+        lastName: response.last_name,
+        isActive: response.is_active,
+        isStaff: response.is_staff,
+        isSuperuser: response.is_superuser,
+      };
+      localStorage.setItem('user', JSON.stringify(registerResponse));
+      localStorage.removeItem('activeViewID');
+      navigate('/dashboard');
     });
   };
 
@@ -61,21 +94,44 @@ export default function Register() {
               <TextField
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                name="username"
+                label="Username"
+                id="username"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
                 name="password"
+                required
+                fullWidth
+                id="pawwsord"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="new-password"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="password"
+                required
+                fullWidth
+                id="pawwsord"
+                label="Password Again"
+                type="password"
+                autoFocus
               />
             </Grid>
           </Grid>
