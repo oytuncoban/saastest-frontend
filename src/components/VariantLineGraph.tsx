@@ -56,7 +56,7 @@ function VariantLineGraph({ data }: VariantLineGraphProps) {
     plugins: {
       title: {
         display: true,
-        text: 'Test Results',
+        text: 'Data Overview (Total Conversions per Day)',
       },
     },
   };

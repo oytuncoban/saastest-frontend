@@ -158,7 +158,7 @@ export function DetailedTest({
         </h1>
       </div>
       {!isLoading && testData && testData.data.length > 0 ? (
-        <div className="flex mt-8 w-screen gap-24 ">
+        <div className="flex mt-8 gap-24 ">
           <div className="w-7/10 flex flex-col flex-grow gap-4">
             <div className="row-auto">
               <TestTable

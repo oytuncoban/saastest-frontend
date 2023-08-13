@@ -32,7 +32,7 @@ export function APIKeys() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openKeyModal, setOpenKeyModal] = useState(false);
   const [currentKey, setCurrentKey] = useState<APIKey>();
-  const [apiKeys, setApiKeys] = useImmer<APIKey[]>(MOCK_API_KEYS);
+  const [apiKeys, setApiKeys] = useImmer<APIKey[]>([]);
 
   function generateApiKey() {
     const prefixLength = 7;
