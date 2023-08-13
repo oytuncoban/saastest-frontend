@@ -59,9 +59,7 @@ export function login(credentials: LoginData) {
     email: credentials.email.toString(),
     password: credentials.password.toString(),
   };
-  return network.post('/auth/login', loginRequest, {
-    withCredentials: false,
-  });
+  return network.post('/auth/login', loginRequest);
 }
 
 export function register(data: RegisterFormData) {
@@ -81,7 +79,5 @@ export function register(data: RegisterFormData) {
     name: data.firstName.toString(),
     surname: data.lastName.toString(),
   };
-  return network.post('/auth/register', registerRequest, {
-    withCredentials: false,
-  });
+  return network.post('/auth/register', registerRequest);
 }

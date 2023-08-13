@@ -1,5 +1,6 @@
 import { ArrowBackIos } from '@mui/icons-material';
 import { Button, Paper, TableContainer } from '@mui/material';
+import { Box, LoadingOverlay } from '@mantine/core';
 import * as _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,18 +21,23 @@ export function DetailedTest({
   setSelectedTestId,
 }: DetailedTestProps) {
   const [testData, setTestData] = useImmer<TestWithData | null>(null);
+  const [isLoading, setIsLoading] = useImmer<boolean>(false);
   const navigate = useNavigate();
 
   function fetchTest(id: string) {
+    setIsLoading(() => true);
     getTest(id)
       .then((r: { data: TestWithData }) => {
         if (r.data === null) throw new Error('Test not found');
         if (r.data === undefined) throw new Error('Test not found');
+        console.log(r.data);
         setTestData(() => r.data);
+        setIsLoading(() => false);
       })
       .catch((e) => {
         console.error(e);
-        navigate('/404');
+        setIsLoading(() => false);
+        navigate('/dashboard');
       });
   }
 
@@ -43,6 +49,7 @@ export function DetailedTest({
 
   return (
     <>
+      <LoadingOverlay visible={isLoading} overlayBlur={2} />
       <Button
         variant="outlined"
         onClick={() => {
@@ -52,13 +59,12 @@ export function DetailedTest({
         <ArrowBackIos />
         Go Back
       </Button>
-      <div className="w-full">
-        <h1 className="text-4xl font-bold">{testData?.name}</h1>
-      </div>
-      {testData ? (
-        <div className="flex mt-8 w-full gap-24 ">
-          {/*Large Heading named testData.name */}
 
+      <div className="w-full">
+        <h1 className="text-4xl font-bold">{testData?.name} </h1>
+      </div>
+      {!isLoading && testData && testData.data.length > 0 ? (
+        <div className="flex mt-8 w-full gap-24 ">
           <div className="w-7/10 flex flex-col flex-grow gap-4">
             <div className="row-auto">
               <TestTable
@@ -86,22 +92,22 @@ export function DetailedTest({
               <div className="row-auto">
                 <VariantPieChart
                   variant="A"
-                  convRate={testData.testResults?.A?.conversionRate}
+                  // eslint-disable-next-line no-unsafe-optional-chaining
+                  convRate={testData.testResults?.A?.conversionRate / 100}
                 />
               </div>
               <div className="row-auto">
                 <VariantPieChart
                   variant="B"
-                  convRate={testData.testResults?.A?.conversionRate}
+                  // eslint-disable-next-line no-unsafe-optional-chaining
+                  convRate={testData.testResults?.A?.conversionRate / 100}
                 />
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="flex justify-center items-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900" />
-        </div>
+        <>{!isLoading && <h1> No Data</h1>}</>
       )}
     </>
   );

@@ -30,8 +30,14 @@ function TestTable({ variantStats, generalStats }: TestTableProps) {
           {Object.entries(variantStats).map(([variant, stats]) => (
             <TableRow key={variant}>
               <TableCell align="center">{variant}</TableCell>
-              <TableCell align="center">{stats?.variance}</TableCell>
-              <TableCell align="center">{stats?.conversionRate}</TableCell>
+              <TableCell align="center">
+                {stats?.variance?.toFixed(2)}% (
+                {(stats?.variance! / 100).toFixed(5)})
+              </TableCell>
+              <TableCell align="center">
+                {stats.conversionRate.toFixed(2)}% (
+                {(stats.conversionRate / 100).toFixed(5)})
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -45,7 +51,10 @@ function TestTable({ variantStats, generalStats }: TestTableProps) {
           </TableHead>
           <TableRow>
             <TableCell align="right">Significance:</TableCell>
-            <TableCell align="right">{generalStats.significance}</TableCell>
+            <TableCell align="right">
+              {generalStats.significance.toFixed(2)}% (
+              {(generalStats.significance / 100).toFixed(5)})
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell align="right">Alpha: </TableCell>

@@ -11,25 +11,35 @@ import TableRow from '@mui/material/TableRow';
 import { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import CreateTestModal from '@/components/CreateTestModal';
-import { INITIAL_ROWS, Test, getTests } from '@/services/test';
+import { Test, createTest, getTests } from '@/services/test';
 import DetailedTest from '@/views/DetailedTest';
 
 export default function Tests() {
-  const [rows, setRows] = useImmer<Test[]>(INITIAL_ROWS);
+  const [rows, setRows] = useImmer<Test[]>([]);
   const [selectedTestId, setSelectedTestId] = useImmer<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useImmer<boolean>(false);
 
-  useEffect(() => {
-    getTests().then((r: { data: Test[] }) => {
-      setRows(() => r.data);
-    });
-  }, [setRows]);
-
-  function refetchTests() {
-    getTests().then((r: { data: Test[] }) => {
-      setRows(() => r.data);
+  function fetchTests() {
+    getTests().then((r: { data: { tests: Test[] } }) => {
+      setRows(() => r.data.tests);
+      console.log(r.data.tests);
     });
   }
+
+  function handleCreateTest(
+    name: string,
+    type: 'discrete' | 'continous',
+    alpha: number
+  ) {
+    createTest(name, type, alpha).then(() => {
+      fetchTests();
+    });
+  }
+
+  useEffect(() => {
+    fetchTests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return !selectedTestId ? (
     <div className="flex flex-col gap-4">
@@ -49,17 +59,7 @@ export default function Tests() {
             setIsModalOpen(false);
             resetData();
           }}
-          onCreate={(name, type, alpha) => {
-            setRows((draft) => {
-              draft.push({
-                id: Math.floor(Math.random() * 1000).toString(),
-                name,
-                type,
-                alpha,
-              });
-            });
-            setIsModalOpen(false);
-          }}
+          onCreate={(name, type, alpha) => handleCreateTest(name, type, alpha)}
         />
       </div>
       <TableContainer component={Paper}>
@@ -68,10 +68,7 @@ export default function Tests() {
             <TableRow>
               <TableCell>
                 Test Name
-                <IconButton
-                  className="p-0 !ml-2"
-                  onClick={() => refetchTests()}
-                >
+                <IconButton className="p-0 !ml-2" onClick={() => fetchTests()}>
                   <Refresh />
                 </IconButton>
               </TableCell>
@@ -80,28 +77,29 @@ export default function Tests() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell className="uppercase">{row.type}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      setSelectedTestId(row.id);
-                    }}
-                  >
-                    DETAILS
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {rows &&
+              rows.map((row) => (
+                <TableRow
+                  key={row.name}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell className="uppercase">{row.type}</TableCell>
+                  <TableCell align="right">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setSelectedTestId(row.id);
+                      }}
+                    >
+                      DETAILS
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
