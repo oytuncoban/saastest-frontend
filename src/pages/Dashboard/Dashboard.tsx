@@ -73,7 +73,7 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function Dashboard() {
-  const user = useUser();
+  const { user, setUser } = useUser();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -140,7 +140,8 @@ export default function Dashboard() {
   }, [user]);
 
   return !user ? (
-    <NotFound />
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <></>
   ) : (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="absolute" open={open}>
@@ -214,7 +215,10 @@ export default function Dashboard() {
                   onClick={() => {
                     if (item.onClick) {
                       if (item.id === 'logout') {
-                        user.logout();
+                        user.logout().finally(() => {
+                          localStorage.removeItem('user');
+                          setUser(null);
+                        });
                       }
                       item.onClick();
                     }

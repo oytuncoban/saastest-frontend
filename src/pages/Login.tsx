@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -21,11 +22,13 @@ import {
 
 export default function Login() {
   const navigate = useNavigate();
-  const user = useUser();
+  const { user } = useUser();
 
-  if (user) {
-    navigate('/dashboard');
-  }
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [navigate, user]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

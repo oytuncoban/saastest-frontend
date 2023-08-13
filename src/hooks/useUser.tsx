@@ -7,15 +7,12 @@ function useUser() {
   if (user) {
     const userWithMethods = JSON.parse(user);
     userWithMethods.logout = async () => {
-      network.get('/auth/logout').then(() => {
-        localStorage.removeItem('user');
-        setUser(null);
-      });
+      network.get('/auth/logout');
     };
-    return userWithMethods;
+    return { user: userWithMethods, setUser };
   }
 
-  return null;
+  return { user: null, setUser };
 }
 
 export default useUser;

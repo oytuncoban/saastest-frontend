@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -19,10 +20,12 @@ import {
 
 export default function Register() {
   const navigate = useNavigate();
-  const user = useUser();
-  if (user) {
-    navigate('/dashboard');
-  }
+  const { user } = useUser();
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [navigate, user]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,21 +36,10 @@ export default function Register() {
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     register(registerData as RegisterFormData).then((r: AxiosResponse) => {
-      const response: UserAxiosResponse = r.data;
-      const registerResponse: RegisterResponse = {
-        id: response.id,
-        email: response.email,
-        username: response.username,
-        firstName: response.first_name,
-        lastName: response.last_name,
-        isActive: response.is_active,
-        isStaff: response.is_staff,
-        isSuperuser: response.is_superuser,
-      };
-      localStorage.setItem('user', JSON.stringify(registerResponse));
       localStorage.removeItem('activeViewID');
-      navigate('/dashboard');
+      navigate('/login');
     });
   };
 

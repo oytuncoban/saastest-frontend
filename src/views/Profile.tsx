@@ -7,7 +7,7 @@ import { User } from '@/services/auth';
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
-  const user = useUser();
+  const { user } = useUser();
   if (!user) {
     navigate('/login');
   }
