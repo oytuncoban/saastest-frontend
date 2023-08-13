@@ -130,8 +130,8 @@ export function DetailedTest({
         Go Back
       </Button>
 
-      <div className="w-full">
-        <h1 className="text-4xl font-bold">
+      <div className="w-screen">
+        <h1 className="text-4xl w-full font-bold">
           {testData?.name}
           <IconButton
             className="p-0 !ml-2"
