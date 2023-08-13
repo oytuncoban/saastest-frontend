@@ -8,8 +8,8 @@ function useUser() {
     const userWithMethods = JSON.parse(user);
     userWithMethods.logout = async () => {
       network.get('/auth/logout').then(() => {
-        setUser(null);
         localStorage.removeItem('user');
+        setUser(null);
       });
     };
     return userWithMethods;
