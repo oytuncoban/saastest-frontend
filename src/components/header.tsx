@@ -45,12 +45,18 @@ export default function Header() {
             </a>
           ))} */}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
           <NavLink
             to="/login"
             className="text-sm font-semibold leading-6 text-white"
           >
             Log in <span aria-hidden="true">&rarr;</span>
+          </NavLink>
+          <NavLink
+            to="/register"
+            className="text-sm font-semibold leading-6 text-white"
+          >
+            Register <span aria-hidden="true">&rarr;</span>
           </NavLink>
         </div>
       </nav>

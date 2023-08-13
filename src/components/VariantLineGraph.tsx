@@ -61,7 +61,7 @@ function VariantLineGraph({ data }: VariantLineGraphProps) {
     },
   };
 
-  return <Line data={chartData} options={options} />;
+  return <Line style={{ width: '100%' }} data={chartData} options={options} />;
 }
 
 export default React.memo(VariantLineGraph);
