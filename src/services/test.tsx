@@ -62,3 +62,7 @@ export function createTest(
     alpha,
   });
 }
+
+export function uploadBulkCSV(testId: string, file: FormData) {
+  return network.post(`/tests/${testId}/add_bulk`, file);
+}

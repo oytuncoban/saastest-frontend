@@ -22,7 +22,6 @@ export default function Tests() {
   function fetchTests() {
     getTests().then((r: { data: { tests: Test[] } }) => {
       setRows(() => r.data.tests);
-      console.log(r.data.tests);
     });
   }
 
