@@ -25,7 +25,7 @@ export default function ApiKeysTable({ apiKeys, onDelete }: ApiKeysTableProps) {
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
-          <TableCell>Public Key</TableCell>
+          <TableCell>Prefix</TableCell>
           <TableCell>Action</TableCell>
         </TableRow>
       </TableHead>

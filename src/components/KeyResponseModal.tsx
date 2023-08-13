@@ -42,13 +42,8 @@ export default function KeyResponseModal({
             <span className="font-bold">{apiKeyData.name}</span>
           </Typography>
           <div className="row-auto flex items-center justify-between">
-            <Typography>Public Key: {apiKeyData.publicKey}</Typography>
-            <IconButton
-              className="p-0 !ml-2"
-              onClick={() => copyToClipboard(apiKeyData.publicKey)}
-            >
-              <ContentCopy />
-            </IconButton>
+            <Typography>Prefix: {apiKeyData.publicKey}</Typography>
+
             {/* <Button
               onClick={() => }
               startIcon={<ClipboardDocumentIcon />}
@@ -60,9 +55,18 @@ export default function KeyResponseModal({
             <Typography sx={{ color: 'red' }}>
               Private Key: {apiKeyData.privateKey}
             </Typography>
+          </div>
+          <div className="row-auto flex items-center justify-between">
+            <Typography>
+              API Key: {`${apiKeyData.publicKey}.${apiKeyData.privateKey}`}
+            </Typography>
             <IconButton
               className="p-0 !ml-2"
-              onClick={() => copyToClipboard(apiKeyData.privateKey)}
+              onClick={() =>
+                copyToClipboard(
+                  `${apiKeyData.publicKey}.${apiKeyData.privateKey}`
+                )
+              }
             >
               <ContentCopy />
             </IconButton>

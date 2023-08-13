@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import { useImmer } from 'use-immer';
 import { uuidv4 } from '@/utils';
 import AddKeyModal from '@/components/AddKeyModal';
@@ -17,14 +17,14 @@ const MOCK_API_KEYS = [
   {
     id: '1',
     name: 'First Key',
-    publicKey: 'b757321c-364f-11ee-be56-0242ac120002',
-    privateKey: 'c01f9c2c-364f-11ee-be56-0242ac120002',
+    publicKey: 'R0Pw0pg',
+    privateKey: '9iDG0CQSFqu3XkJcC5SaCWukG',
   },
   {
     id: '2',
     name: 'Key for ProductX',
-    publicKey: 'ce013102-364f-11ee-be56-0242ac120002',
-    privateKey: 'd06fa48c-364f-11ee-be56-0242ac120002',
+    publicKey: '2f7c4ta',
+    privateKey: 'l0fCvRj7Dh8ftfTgiGj329u73',
   },
 ];
 
@@ -34,12 +34,36 @@ export function APIKeys() {
   const [currentKey, setCurrentKey] = useState<APIKey>();
   const [apiKeys, setApiKeys] = useImmer<APIKey[]>(MOCK_API_KEYS);
 
+  function generateApiKey() {
+    const prefixLength = 7;
+    const keyLength = 25;
+    const prefixChars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const keyChars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
+
+    let prefix = '';
+    for (let i = 0; i < prefixLength; i++) {
+      prefix += prefixChars.charAt(
+        Math.floor(Math.random() * prefixChars.length)
+      );
+    }
+
+    let key = '';
+    for (let i = 0; i < keyLength; i++) {
+      key += keyChars.charAt(Math.floor(Math.random() * keyChars.length));
+    }
+
+    return `${prefix}.${key}`;
+  }
+
   const handleAddKey = (keyName: string) => {
+    const key = generateApiKey();
     const newKey: APIKey = {
       id: Date.now().toString(), // This can also be a UUID if you prefer
       name: keyName,
-      publicKey: uuidv4(),
-      privateKey: uuidv4(),
+      publicKey: key.split('.')[0],
+      privateKey: key.split('.')[1],
     };
     setApiKeys((prevKeys) => [...prevKeys, newKey]);
     setCurrentKey(newKey);
@@ -51,32 +75,34 @@ export function APIKeys() {
   };
 
   return (
-    <div className="p-4 space-y-4">
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setOpenAddModal(true)}
-      >
-        Add Key
-      </Button>
+    <Box component={Paper}>
+      <div className="p-4 space-y-4">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setOpenAddModal(true)}
+        >
+          Add Key
+        </Button>
 
-      <AddKeyModal
-        open={openAddModal}
-        onClose={() => setOpenAddModal(false)}
-        onSubmit={handleAddKey}
-      />
-
-      {currentKey && (
-        <KeyResponseModal
-          open={openKeyModal}
-          onClose={() => setOpenKeyModal(false)}
-          apiKeyData={currentKey}
+        <AddKeyModal
+          open={openAddModal}
+          onClose={() => setOpenAddModal(false)}
+          onSubmit={handleAddKey}
         />
-      )}
 
-      {/* API Keys Table */}
-      <ApiKeysTable apiKeys={apiKeys} onDelete={handleDeleteKey} />
-    </div>
+        {currentKey && (
+          <KeyResponseModal
+            open={openKeyModal}
+            onClose={() => setOpenKeyModal(false)}
+            apiKeyData={currentKey}
+          />
+        )}
+
+        {/* API Keys Table */}
+        <ApiKeysTable apiKeys={apiKeys} onDelete={handleDeleteKey} />
+      </div>
+    </Box>
   );
 }
 
